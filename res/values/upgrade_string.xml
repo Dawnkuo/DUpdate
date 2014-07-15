@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="upgrade_info">发现新版本: %1$s\n特性:\n%2$s\n\n是否现在升级？</string>
+    <string name="upgrade_force_info">发现新版本: %1$s\n特性:\n%2$s\n\n您现在使用的版本已经停止提供服务，是否升级？点击否将退出应用</string>
+    <string name="upgrade_please_wait">查询中，请稍候...</string>
+    <string name="upgrade_alert_title">升级提示</string>
+    <string name="upgrade_alert_yes">是</string>
+    <string name="upgrade_alert_no">否</string>
+    <string name="upgrade_alert_ok">确定</string>
+    <string name="upgrade_alert_not_need">已经是最新版本,不需要升级</string>
+    <string name="upgrade_alert_error">下载安装文件异常，请稍后重试</string>
+    <string name="upgrade_download_new_app">下载新版本</string>
+    
+</resources>
