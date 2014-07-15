@@ -1,5 +1,4 @@
 DUpdate
-Apache License V2.0
 =======
 使用介绍：
 1、在UpgradeConfig中配置相关参数
