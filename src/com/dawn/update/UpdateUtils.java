@@ -1,4 +1,4 @@
-package com.dawn.upgrade;
+package com.dawn.update;
 
 import java.io.File;
 
@@ -16,9 +16,9 @@ import android.text.TextUtils;
  * 更新模块
  * @author dawn
  */
-public class UpgradeUtils {
+public class UpdateUtils {
     /** TAG */
-    private static final String TAG = "UpgradeUtils";
+    private static final String TAG = "UpdateUtils";
     /** 客户端校验模式 */
     public static final int MODE_CLIENT = 0;
     /** 服务端校验模式 */
@@ -30,16 +30,16 @@ public class UpgradeUtils {
     /** 是否显示升级提示对话框 */
     private boolean mShowDialog = true;
     /** 升级检查过程中的observer */
-    private UpgradeObserver mUpgradeObserver = null;
+    private UpdateObserver mUpdateObserver = null;
     /** 升级线程 */
-    private UpgradeThread mUpgradeThread = null;
+    private UpdateThread mUpdateThread = null;
     
     /**
      * 构造方法
      * @param context 上下文
      * @param context
      */
-    public UpgradeUtils(Context context) {
+    public UpdateUtils(Context context) {
         this.mContext = context;
     }
     
@@ -48,13 +48,13 @@ public class UpgradeUtils {
      * @param context 上下文
      * @param channel apk来源（渠道号），不关心可填空
      * @param showDialog 是否显示升级提示对话框
-     * @param upgradeObserver 检查过程中的observer，可为空，使用默认实现
+     * @param updateObserver 检查过程中的observer，可为空，使用默认实现
      */
-    public UpgradeUtils(Context context, String channel, boolean showDialog, UpgradeObserver upgradeObserver) {
+    public UpdateUtils(Context context, String channel, boolean showDialog, UpdateObserver updateObserver) {
         this.mContext = context;
         this.mChannel = channel;
         this.mShowDialog = showDialog;
-        this.mUpgradeObserver = upgradeObserver;
+        this.mUpdateObserver = updateObserver;
     }
 
     /**
@@ -69,7 +69,7 @@ public class UpgradeUtils {
             default:
                 throw new IllegalArgumentException(TAG + ":set mode error");
         }
-        UpgradeConfig.sCurrentMode = checkMode;
+        UpdateConfig.sCurrentMode = checkMode;
     }
     
     /**
@@ -80,7 +80,7 @@ public class UpgradeUtils {
         if (TextUtils.isEmpty(url)) {
             throw new IllegalArgumentException(TAG + ":url is empty");
         }
-        UpgradeConfig.sApkCheckUrl = url;
+        UpdateConfig.sApkCheckUrl = url;
     }
     
     /**
@@ -91,7 +91,7 @@ public class UpgradeUtils {
         if (TextUtils.isEmpty(apkName)) {
             return;
         }
-        UpgradeConfig.sApkDownloadName = apkName;
+        UpdateConfig.sApkDownloadName = apkName;
     }
     
     /**
@@ -99,7 +99,7 @@ public class UpgradeUtils {
      * @return
      */
     public static String getApkDownloadName() {
-        return UpgradeConfig.sApkDownloadName;
+        return UpdateConfig.sApkDownloadName;
     }
     
     /**
@@ -120,14 +120,14 @@ public class UpgradeUtils {
             return;
         }
         // 2，生成一个观察者对象
-        UpgradeObserver observer = mUpgradeObserver;
+        UpdateObserver observer = mUpdateObserver;
         if (null == observer) { // 如果用户没有自己实现，就使用默认实现的
-            if (MODE_CLIENT == UpgradeConfig.sCurrentMode) {
-                observer = new ClientCheckObserver(mContext, versionName, versionCode, mChannel, UpgradeConfig.sApkCheckUrl, mShowDialog);
-            } else if (MODE_SERVER == UpgradeConfig.sCurrentMode) {
-                observer = new ServerCheckObserver(mContext, versionName, versionCode, mChannel, UpgradeConfig.sApkCheckUrl, mShowDialog);
+            if (MODE_CLIENT == UpdateConfig.sCurrentMode) {
+                observer = new ClientCheckObserver(mContext, versionName, versionCode, mChannel, UpdateConfig.sApkCheckUrl, mShowDialog);
+            } else if (MODE_SERVER == UpdateConfig.sCurrentMode) {
+                observer = new ServerCheckObserver(mContext, versionName, versionCode, mChannel, UpdateConfig.sApkCheckUrl, mShowDialog);
             } else {
-                throw new IllegalArgumentException(TAG + " : make UpgradeObserver error");
+                throw new IllegalArgumentException(TAG + " : make UpdateObserver error");
             }
         }
         
@@ -141,8 +141,8 @@ public class UpgradeUtils {
         }
         
         // 4，去服务器拉取更新信息
-        mUpgradeThread = new UpgradeThread(mContext, observer, dialog, UpgradeConfig.sApkCheckUrl);
-        mUpgradeThread.start();
+        mUpdateThread = new UpdateThread(mContext, observer, dialog, UpdateConfig.sApkCheckUrl);
+        mUpdateThread.start();
     }
     
     /**
@@ -150,8 +150,8 @@ public class UpgradeUtils {
      */
     public void cancel() {
         try {
-            if (mUpgradeThread != null) {
-                mUpgradeThread.cancel();
+            if (mUpdateThread != null) {
+                mUpdateThread.cancel();
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,4 +1,4 @@
-package com.dawn.upgrade;
+package com.dawn.update;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,7 +9,7 @@ import android.content.Context;
  * 客户端检验逻辑的默认实现
  * @author dawn
  */
-public class ClientCheckObserver extends HttpUpgradeObserver {
+public class ClientCheckObserver extends HttpUpdateObserver {
     /**
      * 构造方法
      * @param context 上下文

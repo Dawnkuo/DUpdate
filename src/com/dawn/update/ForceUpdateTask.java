@@ -1,4 +1,4 @@
-package com.dawn.upgrade;
+package com.dawn.update;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -21,13 +21,13 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
-import com.dawn.upgradedemo.R;
+import com.dawn.updatedemo.R;
 
 /**
  * 强制升级异步task
  * @author dawn
  */
-public class ForceUpgradeTask extends AsyncTask<String, Long, String> {
+public class ForceUpdateTask extends AsyncTask<String, Long, String> {
     /** 是否取消标记位 */
     private volatile boolean isCanceled = false;
     /** 上下文 */
@@ -41,7 +41,7 @@ public class ForceUpgradeTask extends AsyncTask<String, Long, String> {
      * 默认构造方法
      * @param context 上下文
      */
-    public ForceUpgradeTask(Context context) {
+    public ForceUpdateTask(Context context) {
         mContext = context;
     }
     
@@ -60,7 +60,7 @@ public class ForceUpgradeTask extends AsyncTask<String, Long, String> {
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mProgressDialog.setMax(100);
         mProgressDialog.setCancelable(false);
-        mProgressDialog.setTitle(R.string.upgrade_download_new_app);
+        mProgressDialog.setTitle(R.string.update_download_new_app);
 //        mProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 //            
 //            @Override
@@ -99,7 +99,7 @@ public class ForceUpgradeTask extends AsyncTask<String, Long, String> {
             bufferedInput = new BufferedInputStream(inputStream);
             
             if (isFilesDir(apkSavePath)) {
-                bufferedOutput = new BufferedOutputStream(mContext.openFileOutput(UpgradeUtils.getApkDownloadName(), Context.MODE_WORLD_READABLE));
+                bufferedOutput = new BufferedOutputStream(mContext.openFileOutput(UpdateUtils.getApkDownloadName(), Context.MODE_WORLD_READABLE));
             } else {
                 fileOutputStream = new FileOutputStream(apkSaveFile);
                 bufferedOutput = new BufferedOutputStream(fileOutputStream);
@@ -193,20 +193,20 @@ public class ForceUpgradeTask extends AsyncTask<String, Long, String> {
     protected void onPostExecute(String apkPath) {
         File file = new File(apkPath);
         if (isCanceled) {
-            UpgradeUtils.exitApp(mContext);
+            UpdateUtils.exitApp(mContext);
         } else {
             if (!TextUtils.isEmpty(apkPath) && file.exists()) {
-                UpgradeUtils.sendInstallIntent(mContext, file);
-                UpgradeUtils.exitApp(mContext);
+                UpdateUtils.sendInstallIntent(mContext, file);
+                UpdateUtils.exitApp(mContext);
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setTitle(R.string.upgrade_alert_title);
+                builder.setTitle(R.string.update_alert_title);
                 builder.setCancelable(false);
-                builder.setMessage(mContext.getString(R.string.upgrade_alert_error));
-                builder.setPositiveButton(R.string.upgrade_alert_ok, new DialogInterface.OnClickListener() {
+                builder.setMessage(mContext.getString(R.string.update_alert_error));
+                builder.setPositiveButton(R.string.update_alert_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        UpgradeUtils.exitApp(mContext);
+                        UpdateUtils.exitApp(mContext);
                     }
                 });
                 AlertDialog dialog = builder.create();

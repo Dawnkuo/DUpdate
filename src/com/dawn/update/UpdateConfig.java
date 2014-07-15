@@ -1,8 +1,8 @@
-package com.dawn.upgrade;
+package com.dawn.update;
 
-public class UpgradeConfig {
+public class UpdateConfig {
     /** 当前校验模式，默认为客户端校验 */
-    public static int sCurrentMode = UpgradeUtils.MODE_CLIENT;
+    public static int sCurrentMode = UpdateUtils.MODE_CLIENT;
     /** 升级地址 */
     public static String sApkCheckUrl = ""; // TODO 这里配置apk更新检查地址
     /** apk名称 */

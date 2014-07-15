@@ -1,4 +1,4 @@
-package com.dawn.upgrade;
+package com.dawn.update;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -34,15 +34,15 @@ import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
-import com.dawn.upgradedemo.R;
+import com.dawn.updatedemo.R;
 
 /**
  * Http方式访问服务器的默认实现
  * @author dawn
  */
-public abstract class HttpUpgradeObserver extends DefaultUpgradeObserver {
+public abstract class HttpUpdateObserver extends DefaultUpdateObserver {
     /** tag */
-    private static final String TAG = "HttpUpgradeObserver";
+    private static final String TAG = "HttpUpdateObserver";
     /** 下载id标记 */
     private static final String DL_ID = "downloadId";
     /** 上下文 */
@@ -72,7 +72,7 @@ public abstract class HttpUpgradeObserver extends DefaultUpgradeObserver {
      * @param checkUrl 检查版本更新的地址
      * @param showDialog 是否显示升级提示对话框
      */
-    public HttpUpgradeObserver(Context context, String versionName, int versionCode, String channel, String checkUrl, boolean showDialog) {
+    public HttpUpdateObserver(Context context, String versionName, int versionCode, String channel, String checkUrl, boolean showDialog) {
         super(versionName, versionCode, channel, checkUrl, showDialog);
         mContext = context;
         mDownloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
@@ -91,7 +91,7 @@ public abstract class HttpUpgradeObserver extends DefaultUpgradeObserver {
     public AlertDialog makeLoadingDialog(Context context) {
         ProgressDialog progressDlg = new ProgressDialog(context);
         progressDlg.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDlg.setMessage(context.getString(R.string.upgrade_please_wait));
+        progressDlg.setMessage(context.getString(R.string.update_please_wait));
         return progressDlg;
     }
     
@@ -152,7 +152,7 @@ public abstract class HttpUpgradeObserver extends DefaultUpgradeObserver {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(context, R.string.upgrade_alert_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.update_alert_error, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -169,9 +169,9 @@ public abstract class HttpUpgradeObserver extends DefaultUpgradeObserver {
                         return;
                     }
                     AlertDialog dialog = new AlertDialog.Builder(context)
-                                         .setTitle(R.string.upgrade_alert_title)
-                                         .setMessage(R.string.upgrade_alert_not_need)
-                                         .setPositiveButton(R.string.upgrade_alert_ok, null)
+                                         .setTitle(R.string.update_alert_title)
+                                         .setMessage(R.string.update_alert_not_need)
+                                         .setPositiveButton(R.string.update_alert_ok, null)
                                          .create();
                     dialog.show();
                 }
@@ -179,13 +179,13 @@ public abstract class HttpUpgradeObserver extends DefaultUpgradeObserver {
         } else if (RESULT_YES == result.getCheckResult()) {
             Handler handler = new Handler(context.getMainLooper());
             int infoId = 0;
-            if (result.isForceUpgrade(mVersionCode)) {
-                infoId = R.string.upgrade_force_info;
+            if (result.isForceUpdate(mVersionCode)) {
+                infoId = R.string.update_force_info;
             } else {
-                infoId = R.string.upgrade_info;
+                infoId = R.string.update_info;
             }
             final String info = context.getString(infoId, result.getVersionName(), result.getVersionInfo());
-            final String apkPath = getApkPath(context) + UpgradeUtils.getApkDownloadName();
+            final String apkPath = getApkPath(context) + UpdateUtils.getApkDownloadName();
             handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -194,23 +194,23 @@ public abstract class HttpUpgradeObserver extends DefaultUpgradeObserver {
                         return;
                     }
                     AlertDialog dialog = new AlertDialog.Builder(context)
-                    .setTitle(R.string.upgrade_alert_title)
+                    .setTitle(R.string.update_alert_title)
                     .setMessage(info)
-                    .setPositiveButton(R.string.upgrade_alert_yes, new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.update_alert_yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            if (result.isForceUpgrade(mVersionCode)) {
+                            if (result.isForceUpdate(mVersionCode)) {
                                 forceDownload(context, apkPath, result.getUrl());
                             } else {
                                 normalDownload(apkPath, result.getUrl());
                             }
                         }
                     })
-                    .setNegativeButton(R.string.upgrade_alert_no, new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.update_alert_no, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            if (result.isForceUpgrade(mVersionCode)) {
-                                UpgradeUtils.exitApp(context);
+                            if (result.isForceUpdate(mVersionCode)) {
+                                UpdateUtils.exitApp(context);
                             }
                         }
                     })
@@ -233,7 +233,7 @@ public abstract class HttpUpgradeObserver extends DefaultUpgradeObserver {
      * @param url apk下载地址
      */
     private void forceDownload(final Context context, final String apkPath, final String url) {
-        (new ForceUpgradeTask(context)).execute(url, apkPath);
+        (new ForceUpdateTask(context)).execute(url, apkPath);
     }
     
     /**
@@ -262,7 +262,7 @@ public abstract class HttpUpgradeObserver extends DefaultUpgradeObserver {
         request.setVisibleInDownloadsUi(true);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         //sdcard的目录下的download文件夹  
-        request.setDestinationInExternalPublicDir("", UpgradeUtils.getApkDownloadName());
+        request.setDestinationInExternalPublicDir("", UpdateUtils.getApkDownloadName());
         request.setTitle(mContext.getString(R.string.app_name));   
         long id = mDownloadManager.enqueue(request);   
         //保存id   
@@ -413,7 +413,7 @@ public abstract class HttpUpgradeObserver extends DefaultUpgradeObserver {
                     try {
                         String uri = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
                         File apkSaveFile = new File(new URI(uri));
-                        UpgradeUtils.sendInstallIntent(mContext, apkSaveFile);
+                        UpdateUtils.sendInstallIntent(mContext, apkSaveFile);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -434,7 +434,7 @@ public abstract class HttpUpgradeObserver extends DefaultUpgradeObserver {
             mDownloadManager.remove(mSharedPreferences.getLong(DL_ID, 0));
             mSharedPreferences.edit().clear().commit();
             String apkPath = getApkPath(mContext);
-            File apkSaveFile = new File(apkPath + UpgradeUtils.getApkDownloadName());
+            File apkSaveFile = new File(apkPath + UpdateUtils.getApkDownloadName());
             if (apkSaveFile.exists()) {
                 apkSaveFile.delete();
             }

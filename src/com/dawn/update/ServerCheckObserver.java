@@ -1,4 +1,4 @@
-package com.dawn.upgrade;
+package com.dawn.update;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,7 +9,7 @@ import android.content.Context;
  * 服务端检验逻辑的默认实现
  * @author dawn
  */
-public class ServerCheckObserver extends HttpUpgradeObserver {
+public class ServerCheckObserver extends HttpUpdateObserver {
     /**
      * 构造方法
      * @param context 上下文
@@ -32,8 +32,8 @@ public class ServerCheckObserver extends HttpUpgradeObserver {
         }
         try {
             JSONObject jsonObject = new JSONObject(versionString);
-            boolean needUpgrade = jsonObject.optBoolean("upgrade", false);
-            if (needUpgrade) {
+            boolean needUpdate = jsonObject.optBoolean("update", false);
+            if (needUpdate) {
                 result.setCheckResult(RESULT_YES);
                 result.setVersionCode(jsonObject.optInt("vc", 0));
                 result.setVersionName(jsonObject.optString("vn", ""));

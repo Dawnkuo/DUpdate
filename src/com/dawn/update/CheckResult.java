@@ -1,4 +1,4 @@
-package com.dawn.upgrade;
+package com.dawn.update;
 
 /**
  * 检查结果对象
@@ -72,7 +72,7 @@ public class CheckResult {
      * 是否需要强制升级
      * @return 是否需要强制升级
      */
-    public boolean isForceUpgrade(int currentVersion) {
+    public boolean isForceUpdate(int currentVersion) {
         return mForceVersionCode > currentVersion;
     }
 

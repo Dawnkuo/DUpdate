@@ -1,4 +1,4 @@
-package com.dawn.upgrade;
+package com.dawn.update;
 
 import java.io.IOException;
 
@@ -9,7 +9,7 @@ import android.content.Context;
  * 升级校验回调
  * @author dawn
  */
-public interface UpgradeObserver {
+public interface UpdateObserver {
     /** 不需要升级 */
     int RESULT_NO = 0;
     /** 需要普通升级 */

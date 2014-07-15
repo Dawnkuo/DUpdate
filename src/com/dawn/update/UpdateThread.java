@@ -1,4 +1,4 @@
-package com.dawn.upgrade;
+package com.dawn.update;
 
 import java.io.IOException;
 
@@ -10,11 +10,11 @@ import android.os.Handler;
  * 升级检查线程
  * @author dawn
  */
-public class UpgradeThread extends Thread {
+public class UpdateThread extends Thread {
     /** 上下文 */
     private Context mContext = null;
     /** 升级校验回调 */
-    private UpgradeObserver mObserver = null;
+    private UpdateObserver mObserver = null;
     /** loading对话框 */
     private AlertDialog mLoadingDialog = null;
     /** 升级检查url */
@@ -27,7 +27,7 @@ public class UpgradeThread extends Thread {
      * @param showDialog 是否显示提示对话框
      * @param loadingDialog long对话框
      */
-    public UpgradeThread(Context context, UpgradeObserver observer, AlertDialog loadingDialog, String checkUrl) {
+    public UpdateThread(Context context, UpdateObserver observer, AlertDialog loadingDialog, String checkUrl) {
         mContext = context;
         mObserver = observer;
         mLoadingDialog = loadingDialog;
@@ -53,11 +53,11 @@ public class UpgradeThread extends Thread {
         try {
             CheckResult ret = mObserver.doCheck(mObserver.sendRequest(mContext, mCheckUrl, mObserver.makeLoaclVersionInfo()));
             switch(ret.getCheckResult()) {
-                case UpgradeObserver.RESULT_YES:
-                case UpgradeObserver.RESULT_NO:
+                case UpdateObserver.RESULT_YES:
+                case UpdateObserver.RESULT_NO:
                     mObserver.onResult(mContext, ret);
                     break;
-                case UpgradeObserver.RESULT_CANCEL:
+                case UpdateObserver.RESULT_CANCEL:
                     mObserver.onCancel(mContext);
                     break;
                 default:
@@ -65,10 +65,10 @@ public class UpgradeThread extends Thread {
                     break;
             }
         } catch (IOException e) {
-            mObserver.onError(mContext, UpgradeObserver.RESULT_ERROR_NET);
+            mObserver.onError(mContext, UpdateObserver.RESULT_ERROR_NET);
             e.printStackTrace();
         } catch (Exception e) {
-            mObserver.onError(mContext, UpgradeObserver.RESULT_ERROR_UNKNOW);
+            mObserver.onError(mContext, UpdateObserver.RESULT_ERROR_UNKNOW);
             e.printStackTrace();
         }
 

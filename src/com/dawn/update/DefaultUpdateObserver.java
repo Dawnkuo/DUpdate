@@ -1,10 +1,10 @@
-package com.dawn.upgrade;
+package com.dawn.update;
 
 /**
  * 默认实现的校验逻辑基类
  * @author dawn
  */
-public abstract class DefaultUpgradeObserver implements UpgradeObserver {
+public abstract class DefaultUpdateObserver implements UpdateObserver {
     /** 版本名称 */
     protected String mVersionName = null;
     /** 版本比较数字 */
@@ -23,7 +23,7 @@ public abstract class DefaultUpgradeObserver implements UpgradeObserver {
      * @param checkUrl 检查版本更新的地址
      * @param showDialog 是否显示升级提示对话框
      */
-    public DefaultUpgradeObserver(String versionName, int versionCode, String channel, String checkUrl, boolean showDialog) {
+    public DefaultUpdateObserver(String versionName, int versionCode, String channel, String checkUrl, boolean showDialog) {
         this.mVersionName = versionName;
         this.mVersionCode = versionCode;
         this.mChannel = channel;
