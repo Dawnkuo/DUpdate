@@ -9,7 +9,7 @@ DUpdate是一个针对android平台的升级模块，可以满足大部分应用
 
 如何使用：
 
-1、在UpgradeConfig中配置相关参数，并且要和apk升级检查的后台确定返回的json字段，json字段的解析在ClientCheckObserver中，可以根据需要修改
+1、在UpdateConfig中配置相关参数，并且要和apk升级检查的后台确定返回的json字段，json字段的解析在ClientCheckObserver中，可以根据需要修改
 
 
 2、在相关检查逻辑中加入代码
