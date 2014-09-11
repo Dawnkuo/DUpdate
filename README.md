@@ -24,4 +24,4 @@ DUpdate是一个针对android平台的升级模块，可以满足大部分应用
 
 如果你有意见或建议，请给我发邮件dawnkuo.hk@gmail.com
 
-android交流群：369553261
+

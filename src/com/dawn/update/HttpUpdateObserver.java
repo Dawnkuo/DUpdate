@@ -417,6 +417,7 @@ public abstract class HttpUpdateObserver extends DefaultUpdateObserver {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    mContext.unregisterReceiver(mReceiver);
                     break;
                 case DownloadManager.STATUS_FAILED:
                     Log.e(TAG, "STATUS_FAILED");
@@ -431,6 +432,7 @@ public abstract class HttpUpdateObserver extends DefaultUpdateObserver {
      */
     private void deleteFile() {
         try {
+            mContext.unregisterReceiver(mReceiver);
             mDownloadManager.remove(mSharedPreferences.getLong(DL_ID, 0));
             mSharedPreferences.edit().clear().commit();
             String apkPath = getApkPath(mContext);
@@ -448,8 +450,7 @@ public abstract class HttpUpdateObserver extends DefaultUpdateObserver {
      * @param url url
      * @return 转码后的url
      */  
-    private String encodeGB(String url)  
-    {  
+    private String encodeGB(String url) {  
         //转换中文编码  
         String split[] = url.split("/");  
         for (int i = 1; i < split.length; i++) {  
