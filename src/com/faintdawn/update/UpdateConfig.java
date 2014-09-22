@@ -1,4 +1,4 @@
-package com.dawn.update;
+package com.faintdawn.update;
 
 public class UpdateConfig {
     /** 当前校验模式，默认为客户端校验 */

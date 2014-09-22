@@ -1,4 +1,4 @@
-package com.dawn.update;
+package com.faintdawn.update;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -6,10 +6,10 @@ import org.json.JSONObject;
 import android.content.Context;
 
 /**
- * 服务端检验逻辑的默认实现
+ * 客户端检验逻辑的默认实现
  * @author dawn
  */
-public class ServerCheckObserver extends HttpUpdateObserver {
+public class ClientCheckObserver extends HttpUpdateObserver {
     /**
      * 构造方法
      * @param context 上下文
@@ -19,10 +19,10 @@ public class ServerCheckObserver extends HttpUpdateObserver {
      * @param checkUrl 检查版本更新的地址
      * @param showDialog 是否显示升级提示对话框
      */
-    public ServerCheckObserver(Context context, String versionName, int versionCode, String channel, String checkUrl, boolean showDialog) {
+    public ClientCheckObserver(Context context, String versionName, int versionCode, String channel, String checkUrl, boolean showDialog) {
         super(context, versionName, versionCode, channel, checkUrl, showDialog);
     }
-
+    
     @Override
     public CheckResult doCheck(String versionString) {
         CheckResult result = new CheckResult();
@@ -31,11 +31,16 @@ public class ServerCheckObserver extends HttpUpdateObserver {
             return result;
         }
         try {
+            // vc = versionCode
+            // vn = versionName
+            // vi = versionInfo
+            // fv = forceVersion
+            // url = url
+            // as = apkSize
             JSONObject jsonObject = new JSONObject(versionString);
-            boolean needUpdate = jsonObject.optBoolean("update", false);
-            if (needUpdate) {
+            result.setVersionCode(jsonObject.optInt("vc", 0));
+            if (mVersionCode < result.getVersionCode()) {
                 result.setCheckResult(RESULT_YES);
-                result.setVersionCode(jsonObject.optInt("vc", 0));
                 result.setVersionName(jsonObject.optString("vn", ""));
                 result.setVersionInfo(jsonObject.optString("vi", ""));
                 result.setForceVersion(jsonObject.optInt("fv", 0));

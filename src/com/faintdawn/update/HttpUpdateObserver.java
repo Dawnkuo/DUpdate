@@ -1,4 +1,4 @@
-package com.dawn.update;
+package com.faintdawn.update;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -34,7 +34,7 @@ import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
-import com.dawn.updatedemo.R;
+import com.faintdawn.updatedemo.R;
 
 /**
  * Http方式访问服务器的默认实现

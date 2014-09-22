@@ -1,4 +1,4 @@
-package com.dawn.update;
+package com.faintdawn.update;
 
 import java.io.File;
 

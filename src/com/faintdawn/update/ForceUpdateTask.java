@@ -1,4 +1,4 @@
-package com.dawn.update;
+package com.faintdawn.update;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -21,7 +21,7 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
-import com.dawn.updatedemo.R;
+import com.faintdawn.updatedemo.R;
 
 /**
  * 强制升级异步task

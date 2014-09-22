@@ -1,4 +1,4 @@
-package com.dawn.update;
+package com.faintdawn.update;
 
 /**
  * 默认实现的校验逻辑基类

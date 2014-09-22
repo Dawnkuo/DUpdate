@@ -1,7 +1,7 @@
-package com.dawn.updatedemo;
+package com.faintdawn.updatedemo;
 
-import com.dawn.update.UpdateUtils;
-import com.dawn.updatedemo.R;
+import com.faintdawn.update.UpdateUtils;
+import com.faintdawn.updatedemo.R;
 
 import android.app.Activity;
 import android.os.Bundle;

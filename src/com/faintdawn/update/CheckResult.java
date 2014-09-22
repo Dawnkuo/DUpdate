@@ -1,4 +1,4 @@
-package com.dawn.update;
+package com.faintdawn.update;
 
 /**
  * 检查结果对象
